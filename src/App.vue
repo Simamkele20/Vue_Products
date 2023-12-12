@@ -1,17 +1,79 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="wrapper">
+    <!-- if statement remove the element on th DOM-->
+    <div class="row" v-if="products.length">
+      <!-- For Each Loop  we must also include a key. -->
+      <div class="prodCard" v-for="product in products" :key="product.id">
+        <div class="card-header">
+          <!-- Double Mustache -->
+          <h3>{{ product.prodName }}</h3>
+        </div>
+        <div class="card-body">
+          <!-- v-bind attribute with colon  before the attribute name  -->
+          <img :src="product.image" :alt="product.prodName" loading="lazy" @mouseenter="onMouseEnter"
+            @mouseleave="onMouseLeave">
+          <p :class="product.amount > 420 ? 'expensive' : 'cheap'">R{{ product.amount.toFixed(2) }}</p>
+        </div>
+        <div class="card-footer">
+          <a href="#" type="button">View Details</a>
+        </div>
+      </div>
+    </div>
+    <!-- else statement -->
+    <div v-else>
+      <h2> SOrry, our products are out of stock.</h2>
+    </div>
+  </div>
 </template>
-
+ 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
+  name: 'ProductsComp',
+  // Reactive State 
+  data() {
+    return {
+      products: [
+        {
+          id: 1,
+          prodName: 'Python Crash Course',
+          category: 'Python',
+          amount: 400.9999,
+          image: 'https://i.postimg.cc/MKDLBPYm/Python-Crash-Course-cover.jpg'
+        },
+        {
+          id: 2,
+          prodName: 'Python Programming',
+          category: 'Python',
+          amount: 900.4586,
+          image: 'https://i.postimg.cc/rFcbKX5p/Python-Programming-for-Beginners-cover.jpg'
+        },
+        {
+          id: 3,
+          prodName: 'Mastering C++',
+          category: 'C++',
+          amount: 1800.896,
+          image: 'https://i.postimg.cc/Ss9zrpfT/Mastering-C-Programming.jpg'
+        },
+      ]
+    }
+  },
+
+  methods: {
+    // the first letter must be lower case
+    onMouseEnter() {
+      alert('Hello there')
+    },
+    onMouseLeave() {
+      alert('Bye')
+    }
+  },
   components: {
-    HelloWorld
+
   }
+
 }
+
+
 </script>
 
 <style>
@@ -22,5 +84,29 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.wrapper :is(.row) {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.prodCard {
+  width: 18rem;
+}
+
+.prodCard :is(>*, img) {
+  width: 100%;
+  aspect-ratio: 1/1;
+}
+
+.expensive {
+  font-weight: bolder;
+  color: darkkhaki;
+}
+
+.cheap {
+  color: black;
 }
 </style>
